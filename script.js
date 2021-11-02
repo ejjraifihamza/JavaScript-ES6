@@ -1,45 +1,49 @@
-// ! For loop
-const numbers1 = [10, 20, 30, 40, 50];
+// ! Real Array vs Array-like
 /*
-? initializer
-? condition
-? incrementer
+the two of them are typeof 'object'
+they don't have the same prototype
 */
-for (let i = 0; i < numbers1.length; i += 1) {
-  console.log(numbers1[i]);
+// * Real Array
+const colors = ["red", "green", "blue"];
+console.log(typeof colors);
+// * Array-like
+const rgb = {
+  0: "red",
+  1: "green",
+  2: "blue",
+  length: 3,
+};
+console.log(rgb);
+console.log(typeof rgb);
+// for (const color of rgb) {
+//   console.log(color); // ! error rgb is not iterable
+// }
+
+const devs = document.querySelectorAll(".message");
+console.log(devs);
+console.log(typeof devs);
+console.log(devs[0]);
+// * So devs is Array-like, not real array
+
+// ! Converting rgb and devs to become real array, and use array constructor
+// * start with rgb
+const rgbToArray = Array.from(rgb);
+console.log(rgbToArray);
+for (const color of rgbToArray) {
+  console.log(color);
 }
-console.log("#################################################");
-// ! forEach ES5, break is not defined in forEach, and return false (that mean stop executing any code).
-const numbers = [10, 20, 30, 40, 50];
-// ? without initializer, condition, incrementer
-// numbers.forEach((number, index, numbers) => {
-//   console.log(number);
-//   console.log(index);
-//   console.log(numbers);
-// });
-// * i just need number
-numbers.forEach((number) => {
-  console.log(number);
-});
-console.log("#################################################");
-// ! for...in ES6 access each index in array
-// * 'const' in for in loop does not change the value bcz for in loop create another scoop for each iteration
-const numbers2 = [10, 20, 30, 40, 50];
-for (const index in numbers2) {
-  console.log(numbers2[index]);
+// * Convert devs
+const devsToArray = Array.from(devs);
+console.log(devsToArray);
+for (const tag of devsToArray) {
+  console.log(tag);
 }
-// ? Prb with this for in loop
-for (const index in numbers2) {
-  // index here is a string
-  console.log(typeof index); // string
-  console.log(typeof +index); // number
-}
-console.log("#################################################");
-// ! for...of ES6 access each element in array
-const numbers3 = [10, 20, 30, 40, 50];
-for (const number of numbers3) {
-  //   if (number === 30) {
-  //     break;
-  //   }
-  console.log(number);
-}
+
+// ! convert string to array
+const name = "Ejjraifi Hamza";
+const nameToArray = Array.from(name);
+console.log(nameToArray);
+
+// ! with Array.of() you can create an real array
+const numbers = Array.of(10, 20, 30, 40);
+console.log(numbers);
