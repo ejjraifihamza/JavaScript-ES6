@@ -1,49 +1,33 @@
-// ! Real Array vs Array-like
+// ! Array.some() check if one element in array give a true value, so it will give a true even if other elements give false
+
 /*
-the two of them are typeof 'object'
-they don't have the same prototype
+? arg: some(element, index, arrayItSelf) 
+! function should return boolean
 */
-// * Real Array
-const colors = ["red", "green", "blue"];
-console.log(typeof colors);
-// * Array-like
-const rgb = {
-  0: "red",
-  1: "green",
-  2: "blue",
-  length: 3,
-};
-console.log(rgb);
-console.log(typeof rgb);
-// for (const color of rgb) {
-//   console.log(color); // ! error rgb is not iterable
-// }
+// * check if number in array numbers is greather than twenty
+const numbers = [3, 5, 15, 27, 31];
+const isGreatherThanTwenty = numbers.some((element, index, arrayItSelf) => {
+  return element > 20;
+});
+console.log(isGreatherThanTwenty); // return true
+// * check if number in array numbers is double
+const isEven = numbers.some((number, index, arrayItSelf) => {
+  return number % 2 == 0;
+});
+console.log(isEven); // return false
 
-const devs = document.querySelectorAll(".message");
-console.log(devs);
-console.log(typeof devs);
-console.log(devs[0]);
-// * So devs is Array-like, not real array
+// ! Array.every() check if all element in array give a true/false value
+/*
+? to make it return true should every element in array passe the test with true
+? if one element does not passe the test it will return false
+*/
+const myNumbers = [5, 6, 9, 54, 66];
+const isGreatherThanTen = myNumbers.every((element, index, arrayItSelf) => {
+  return element > 10;
+});
+console.log(isGreatherThanTen); // return false
 
-// ! Converting rgb and devs to become real array, and use array constructor
-// * start with rgb
-const rgbToArray = Array.from(rgb);
-console.log(rgbToArray);
-for (const color of rgbToArray) {
-  console.log(color);
-}
-// * Convert devs
-const devsToArray = Array.from(devs);
-console.log(devsToArray);
-for (const tag of devsToArray) {
-  console.log(tag);
-}
-
-// ! convert string to array
-const name = "Ejjraifi Hamza";
-const nameToArray = Array.from(name);
-console.log(nameToArray);
-
-// ! with Array.of() you can create an real array
-const numbers = Array.of(10, 20, 30, 40);
-console.log(numbers);
+const isGreatherThanFour = myNumbers.every((element, index, arrayItSelf) => {
+  return element > 4;
+});
+console.log(isGreatherThanFour); // return true
