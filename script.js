@@ -1,34 +1,45 @@
-// ! Spread Operator
-// * Object
-/* 
-? object-literal {}) => passed by reference
-? mean: if you create a copy of variable and change that copy, the main variable it will change also
+/*
+ ? Just you create Promise Constructor => state 'initial'
+ ? Promise => I keep it => I will hang with my friends => state 'fulfilled'
+ ? Promise => I don't keep it => I will not hang with friends => state 'rejected'
+ ! Promise only have one state (initial or fulfilled or rejected)
 */
+const hangWithFriends = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Hang With Friends");
+    reject("I will not hang with friends"); // ignored
+  }, 500);
+});
+console.log(hangWithFriends);
+/* 
+ ? then() have two callback fn first: on state fulfilled, second: on state rejected
+ ? if State is fulfilled then first callback fn in then() will execute
+ ? if State is rejected then second callback fn in then() will execute
+*/
+const answer = hangWithFriends.then(
+  (onFulfillled) => {
+    console.log(onFulfillled);
+  },
+  (onRejected) => {
+    console.log(onRejected);
+  }
+);
 
-const studentInfo = {
-  fullName: "Jhon Doe",
-  age: 26,
-};
-console.log(studentInfo);
-let copyOfStudentInfo = studentInfo;
-copyOfStudentInfo.fullName = "Maria Cartner";
-console.log(studentInfo); // {fullName: "Maria Cartner", age: 26}
-console.log("########################################################");
-// * if you want the main variable does not change, use spread operator
-const studentInfo2 = {
-  fullName: "Steven Doe",
-  age: 22,
-};
-console.log(studentInfo2); // {fullName: 'Steven Doe', age: 22}
-let copyOfStudentInfo2 = { ...studentInfo2 };
-copyOfStudentInfo2.fullName = "Andres Doe";
-console.log(copyOfStudentInfo2); // {fullName: 'Andres Doe', age: 22}
-console.log(studentInfo2); // {fullName: 'Steven Doe', age: 22}
-// ! as you can see value of main variable does not change by using spread operator
+// ! if you 100% sure that you will not hang with friend you can replace first callback fn in then() with null
+const hangWithFriends2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject("I will not hang with friends");
+  }, 500);
+});
 
-// * Function
-
-const addNumbers = (a, b, c) => a + b + c;
-const numbers = [10, 20, 30];
-const result = addNumbers(...numbers);
-console.log(result);
+// const answer2 = hangWithFriends2.then(null, (onRejected) => {
+//   console.log(onRejected);
+// });
+// console.log(hangWithFriends2);
+/*
+ * but if you already sur, this way is not clean, instead you can use catch()
+ * catch() use only on promiseState: rejected, it catch the errors
+ */
+const answer2 = hangWithFriends2.catch((onrejected) => {
+  console.log(onrejected);
+});
