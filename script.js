@@ -1,46 +1,111 @@
-// ! Object.defineProperty
-let studentInfo = {
-  firstName: "Jhon",
-  lastName: "Doe",
-};
+// ! try to add one student to students list after 3s
+const students = [
+  { fullName: "Jhon Doe", age: 22 },
+  { fullName: "Micheal Smith", age: 25 },
+];
 
-/*
-? defineProperty have 3 arguments (object, property that you want to add to this obj(string), {Configuration})
-? Configuration list:
-? value => value of pproperty that you want to add to this obj
-? writable => is boolean (if true, means that you can update value, if false, will you know), by default: false
-? enumerable => is boolean (if true, means that you when itireat for obj key, key you add will show up too 'Ex1'), by default: false
-? configurable => is boolean, default false, if true means that you confige that property you add in first, (delete)
-*/
-
-// ! Property - Data (means when you define a property with value)
-Object.defineProperty(studentInfo, "college", {
-  value: "Harvard",
-  //   configurable: true,
-  //   writable: true,
-  //   enumerable: true, // ! Ex1
-});
-studentInfo.college = "oxf";
-console.log(studentInfo); // {firstName: 'Jhon', lastName: 'Doe', college: 'Harvard'}
-// ! Ex1
-for (const key in studentInfo) {
-  console.log(key);
+// * add student after 3s
+function addStudent(student) {
+  setTimeout(() => {
+    students.push(student);
+  }, 3000);
 }
 
-// ! Property - Accessor (means when you define a property value with setter)
-Object.defineProperty(studentInfo, "fullName", {
-  get() {
-    return `${this.firstName} ${this.lastName}`;
-  },
-  set(value) {
-    [this.firstName, this.lastName] = value.split(" ");
-  },
-  //   configurable: true,
-  //   writable: true,
-  //   enumerable: true, // ! Ex1
-});
-console.log(studentInfo.fullName);
-studentInfo.fullName = "Micheal Smith";
-console.log(studentInfo.fullName);
+// * show students list after 0.5s
+function getStudents() {
+  setTimeout(() => {
+    console.log(students);
+  }, 500);
+}
 
-// !!!!!! Property canot be Accessor and Data in the same time
+addStudent({ fullName: "Maria Cartner", age: 30 });
+getStudents();
+
+/* 
+! the prb here is: getStudent() don't show the student we add bcz addStudent() have a delai with 3s
+! and in other hand getStudent have a delai with just 0.5s
+! to solve this prb let's work with callback fn
+*/
+
+// !!!!!!!!!!!!!! FIRST WAY (CALLBACK FN)
+const students2 = [
+  { fullName: "Jhon Doe", age: 22 },
+  { fullName: "Micheal Smith", age: 25 },
+];
+
+// * add student after 3s, with callback fn ass an argument
+function addStudent2(student, callback) {
+  setTimeout(() => {
+    students2.push(student);
+    callback();
+  }, 3000);
+}
+
+// * show students list after 0.5s
+function getStudents2() {
+  setTimeout(() => {
+    console.log(students2);
+  }, 500);
+}
+
+addStudent2({ fullName: "Maria Cartner", age: 30 }, getStudents2);
+/* 
+! what happent with this way that we manage the order and tell the programme to do not execute the getStudents2
+! intel complete executing of addStudent2()
+*/
+
+// !!!!!!!!!!!!!! SECOND WAY (PROMISE)
+const students3 = [
+  { fullName: "Jhon Doe", age: 22 },
+  { fullName: "Micheal Smith", age: 25 },
+];
+
+// * add student after 3s, with promise
+function addStudent3(student) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      students3.push(student);
+      resolve();
+    }, 3000);
+  });
+}
+// * show students list after 0.5s
+function getStudents3() {
+  setTimeout(() => {
+    console.log(students3);
+  }, 500);
+}
+// * Tell the programe to execute addStudent3() first, then if promis state: fullfilled execute getStudents3()
+addStudent3({ fullName: "Mary Cartner", age: 30 }).then((onFulfilled) => {
+  getStudents3();
+});
+
+// !!!!!!!!!!!!!! THIRD WAY: BEST WAY (ASYNC/AWAIT)
+// * note: async/await is abstraction or syntactic sugar of promise to make promise easier to read or to express
+const students4 = [
+  { fullName: "Jhon Doe", age: 22 },
+  { fullName: "Micheal Smith", age: 25 },
+];
+
+// * add student after 3s, with async/await
+function addStudent4(student) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      students4.push(student);
+      resolve();
+    }, 3000);
+  });
+}
+
+// * show students list after 0.5s
+function getStudents4() {
+  setTimeout(() => {
+    console.log(students4);
+  }, 500);
+}
+
+async function main() {
+  await addStudent4({ fullName: "Josh Cartner", age: 30 });
+  getStudents4();
+}
+main();
